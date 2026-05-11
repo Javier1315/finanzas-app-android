@@ -14,13 +14,16 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun BarChart(
 
+    // Recibe un mapa con el mes y el total gastado
     data: Map<String, Double>
 
 ) {
 
+    // Obtiene el valor más alto para escalar las barras proporcionalmente
     val maxValue =
         data.values.maxOrNull() ?: 1.0
 
+    // Conversión de número de mes a abreviatura
     val monthNames = mapOf(
 
         "1" to "Ene",
@@ -37,6 +40,7 @@ fun BarChart(
         "12" to "Dic"
     )
 
+    // Contenedor principal del grafico
     Row(
 
         modifier = Modifier
@@ -51,8 +55,10 @@ fun BarChart(
 
     ) {
 
+        // Recorre cada mes y genera una barra
         data.forEach { (month, value) ->
 
+            // Calcula la altura proporcional de la barra
             val barHeight =
 
                 ((value / maxValue) * 140)
@@ -65,11 +71,14 @@ fun BarChart(
 
             ) {
 
+                // Barra visual del gráfico
                 Box(
 
                     modifier = Modifier
                         .width(28.dp)
                         .height(barHeight.dp)
+
+                        // Bordes redondeados superiores
                         .clip(
                             RoundedCornerShape(
                                 topStart = 8.dp,
@@ -77,6 +86,7 @@ fun BarChart(
                             )
                         )
 
+                        // Color principal de la aplicacion
                         .background(
                             MaterialTheme
                                 .colorScheme
@@ -88,6 +98,7 @@ fun BarChart(
                     modifier = Modifier.height(8.dp)
                 )
 
+                // Nombre abreviado del mes
                 Text(
                     text = monthNames[month] ?: month
                 )

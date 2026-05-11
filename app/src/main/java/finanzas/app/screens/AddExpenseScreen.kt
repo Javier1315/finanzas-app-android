@@ -16,18 +16,23 @@ import finanzas.app.viewmodels.ExpenseViewModel
 import java.util.Calendar
 import java.util.UUID
 
+// pantalla utilizada para agregar o editar gastos
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddExpenseScreen(
 
+    // viewmodel encargado de manejar gastos
     expenseViewModel: ExpenseViewModel,
 
+    // gasto opcional para modo edicion
     expenseToEdit: Expense? = null,
 
+    // funcion para regresar a la pantalla anterior
     onBack: () -> Unit
 
 ) {
 
+    // estado del titulo del gasto
     var title by remember {
 
         mutableStateOf(
@@ -35,6 +40,7 @@ fun AddExpenseScreen(
         )
     }
 
+    // estado del monto
     var amount by remember {
 
         mutableStateOf(
@@ -43,6 +49,7 @@ fun AddExpenseScreen(
         )
     }
 
+    // categoria seleccionada
     var selectedCategory by remember {
 
         mutableStateOf(
@@ -50,10 +57,12 @@ fun AddExpenseScreen(
         )
     }
 
+    // controla apertura del menu desplegable
     var expanded by remember {
         mutableStateOf(false)
     }
 
+    // fecha seleccionada
     var selectedDate by remember {
 
         mutableStateOf(
@@ -61,16 +70,19 @@ fun AddExpenseScreen(
         )
     }
 
+    // mensaje de error para fechas
     var dateError by remember {
 
         mutableStateOf<String?>(null)
     }
 
+    // mensaje de error para montos invalidos
     var amountError by remember {
 
         mutableStateOf<String?>(null)
     }
 
+    // obtiene fecha actual
     val calendar = Calendar.getInstance()
 
     val year =
@@ -82,11 +94,13 @@ fun AddExpenseScreen(
     val day =
         calendar.get(Calendar.DAY_OF_MONTH)
 
+    // contexto actual de la aplicacion
     val context =
         LocalContext.current
 
     Scaffold(
 
+        // barra superior de la pantalla
         topBar = {
 
             TopAppBar(
@@ -95,6 +109,7 @@ fun AddExpenseScreen(
 
                     Text(
 
+                        // cambia titulo segun modo agregar o editar
                         if (expenseToEdit != null) {
 
                             "Editar gasto"
@@ -125,6 +140,7 @@ fun AddExpenseScreen(
 
         ) {
 
+            // campo para titulo
             OutlinedTextField(
 
                 value = title,
@@ -144,6 +160,7 @@ fun AddExpenseScreen(
                     Modifier.fillMaxWidth()
             )
 
+            // campo para monto
             OutlinedTextField(
 
                 value = amount,
@@ -163,6 +180,7 @@ fun AddExpenseScreen(
                     Modifier.fillMaxWidth()
             )
 
+            // muestra error de monto invalido
             amountError?.let {
 
                 Text(
@@ -176,6 +194,7 @@ fun AddExpenseScreen(
                 )
             }
 
+            // menu desplegable de categorias
             ExposedDropdownMenuBox(
 
                 expanded = expanded,
@@ -218,6 +237,7 @@ fun AddExpenseScreen(
 
                 )
 
+                // opciones de categorias
                 ExposedDropdownMenu(
 
                     expanded = expanded,
@@ -269,6 +289,7 @@ fun AddExpenseScreen(
                 }
             }
 
+            // boton para seleccionar fecha
             OutlinedButton(
 
                 onClick = {
@@ -323,10 +344,12 @@ fun AddExpenseScreen(
                 )
             }
 
+            // boton principal para guardar o actualizar
             Button(
 
                 onClick = {
 
+                    // valida campos vacios
                     if (
 
                         title.isNotBlank()
@@ -345,9 +368,11 @@ fun AddExpenseScreen(
 
                     ) {
 
+                        // convierte monto a numero
                         val amountValue =
                             amount.toDoubleOrNull()
 
+                        // valida monto numerico
                         if (amountValue == null) {
 
                             amountError =
@@ -358,9 +383,11 @@ fun AddExpenseScreen(
 
                         amountError = null
 
+                        // obtiene fecha actual
                         val today =
                             Calendar.getInstance()
 
+                        // convierte fecha seleccionada
                         val expenseDate =
                             Calendar.getInstance()
 
@@ -376,6 +403,7 @@ fun AddExpenseScreen(
                             parts[0].toInt()
                         )
 
+                        // evita registrar fechas futuras
                         if (expenseDate.after(today)) {
 
                             dateError =
@@ -386,6 +414,7 @@ fun AddExpenseScreen(
 
                         dateError = null
 
+                        // crea objeto expense
                         val expense =
 
                             Expense(
@@ -411,6 +440,7 @@ fun AddExpenseScreen(
                                     selectedDate
                             )
 
+                        // actualiza o crea gasto
                         if (expenseToEdit != null) {
 
                             expenseViewModel
@@ -426,6 +456,7 @@ fun AddExpenseScreen(
                                 )
                         }
 
+                        // regresa a pantalla anterior
                         onBack()
                     }
                 },
@@ -451,6 +482,7 @@ fun AddExpenseScreen(
                 )
             }
 
+            // muestra error de fecha
             dateError?.let {
 
                 Text(

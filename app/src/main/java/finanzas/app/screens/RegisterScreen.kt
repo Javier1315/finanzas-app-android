@@ -9,42 +9,53 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import finanzas.app.viewmodels.AuthViewModel
 
+// pantalla de registro de usuarios
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
 
+    // viewmodel encargado de autenticacion
     authViewModel: AuthViewModel,
 
+    // funcion ejecutada al registrarse correctamente
     onRegisterSuccess: () -> Unit,
 
+    // navega de regreso al login
     onBackToLogin: () -> Unit
 
 ) {
 
+    // estado del correo
     var email by remember {
         mutableStateOf("")
     }
 
+    // estado de la contraseña
     var password by remember {
         mutableStateOf("")
     }
 
+    // estado de confirmacion de contraseña
     var confirmPassword by remember {
         mutableStateOf("")
     }
 
+    // mensaje de error para contraseñas
     var passwordError by remember {
         mutableStateOf("")
     }
 
+    // estado de carga
     val isLoading =
         authViewModel.isLoading.value
 
+    // mensaje de error de firebase
     val errorMessage =
         authViewModel.errorMessage.value
 
     Scaffold(
 
+        // barra superior
         topBar = {
 
             TopAppBar(
@@ -71,6 +82,7 @@ fun RegisterScreen(
 
         ) {
 
+            // titulo principal
             Text(
 
                 text = "Registro",
@@ -86,6 +98,7 @@ fun RegisterScreen(
                 modifier = Modifier.height(32.dp)
             )
 
+            // campo de correo
             OutlinedTextField(
 
                 value = email,
@@ -106,6 +119,7 @@ fun RegisterScreen(
                 modifier = Modifier.height(16.dp)
             )
 
+            // campo de contraseña
             OutlinedTextField(
 
                 value = password,
@@ -129,6 +143,7 @@ fun RegisterScreen(
                 modifier = Modifier.height(16.dp)
             )
 
+            // campo para confirmar contraseña
             OutlinedTextField(
 
                 value = confirmPassword,
@@ -152,10 +167,12 @@ fun RegisterScreen(
                 modifier = Modifier.height(24.dp)
             )
 
+            // boton para registrar usuario
             Button(
 
                 onClick = {
 
+                    // valida que las contraseñas coincidan
                     if (
                         password != confirmPassword
                     ) {
@@ -168,6 +185,7 @@ fun RegisterScreen(
 
                     passwordError = ""
 
+                    // registra usuario en firebase
                     authViewModel.register(
 
                         email = email,
@@ -192,6 +210,7 @@ fun RegisterScreen(
                 modifier = Modifier.height(12.dp)
             )
 
+            // boton para regresar al login
             TextButton(
 
                 onClick = onBackToLogin
@@ -203,6 +222,7 @@ fun RegisterScreen(
                 )
             }
 
+            // muestra error de contraseñas
             if (passwordError.isNotEmpty()) {
 
                 Spacer(
@@ -220,6 +240,7 @@ fun RegisterScreen(
                 )
             }
 
+            // muestra errores de autenticacion
             errorMessage?.let {
 
                 Spacer(
@@ -237,6 +258,7 @@ fun RegisterScreen(
                 )
             }
 
+            // indicador de carga
             if (isLoading) {
 
                 Spacer(

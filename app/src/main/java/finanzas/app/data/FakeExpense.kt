@@ -2,7 +2,7 @@ package finanzas.app.data
 
 import finanzas.app.models.Expense
 
-//utilizada unicamente para pruebas, realmente no hace nada
+//utilizada unicamente para pruebas, realmente no hace nada más que cargar datos
 val fakeExpenses = listOf(
 
     Expense(

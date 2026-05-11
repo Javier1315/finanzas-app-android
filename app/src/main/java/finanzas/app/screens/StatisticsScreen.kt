@@ -14,22 +14,27 @@ import finanzas.app.viewmodels.ExpenseViewModel
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 
+// pantalla de estadisticas de gastos
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatisticsScreen(
 
+    // viewmodel encargado de gestionar gastos
     expenseViewModel: ExpenseViewModel
 
 ) {
 
+    // mes seleccionado para filtrar
     var selectedMonth by remember {
         mutableStateOf("Todos")
     }
 
+    // controla apertura del menu desplegable
     var expandedMonth by remember {
         mutableStateOf(false)
     }
 
+    // obtiene gastos filtrados por mes
     val filteredExpenses =
 
         expenseViewModel
@@ -40,6 +45,7 @@ fun StatisticsScreen(
                 selectedMonth
             )
 
+    // agrupa gastos por categoria y suma montos
     val expensesByCategory =
 
         filteredExpenses
@@ -57,6 +63,7 @@ fun StatisticsScreen(
 
     Scaffold(
 
+        // barra superior
         topBar = {
 
             TopAppBar(
@@ -75,6 +82,8 @@ fun StatisticsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(16.dp)
+
+                // permite scroll vertical
                 .verticalScroll(
                     rememberScrollState()
                 ),
@@ -87,6 +96,7 @@ fun StatisticsScreen(
 
         ) {
 
+            // titulo principal
             Text(
 
                 text = "Resumen de Mis Gastos",
@@ -97,6 +107,7 @@ fun StatisticsScreen(
                         .headlineMedium
             )
 
+            // tarjeta principal del grafico
             Card(
 
                 modifier = Modifier.fillMaxWidth(),
@@ -126,6 +137,7 @@ fun StatisticsScreen(
                         Alignment.CenterHorizontally
 
                 ) {
+
                     Box(
 
                         modifier = Modifier
@@ -134,13 +146,14 @@ fun StatisticsScreen(
                         contentAlignment =
                             Alignment.Center
 
-                    )
-                    {
+                    ) {
 
+                        // grafico tipo dona
                         DonutChart(
                             data = expensesByCategory
                         )
 
+                        // informacion central del grafico
                         Column(
 
                             horizontalAlignment =
@@ -151,6 +164,7 @@ fun StatisticsScreen(
                                 text = "Total"
                             )
 
+                            // total general de gastos
                             Text(
 
                                 text =
@@ -174,6 +188,7 @@ fun StatisticsScreen(
                 }
             }
 
+            // filtro por mes
             ExposedDropdownMenuBox(
 
                 expanded = expandedMonth,
@@ -217,6 +232,7 @@ fun StatisticsScreen(
 
                 )
 
+                // menu desplegable de meses
                 ExposedDropdownMenu(
 
                     expanded = expandedMonth,
@@ -259,6 +275,7 @@ fun StatisticsScreen(
 
                             onClick = {
 
+                                // actualiza mes seleccionado
                                 selectedMonth =
                                     month
 
@@ -270,6 +287,7 @@ fun StatisticsScreen(
                 }
             }
 
+            // tarjeta de porcentajes por categoria
             Card(
 
                 modifier = Modifier.fillMaxWidth(),
@@ -315,6 +333,7 @@ fun StatisticsScreen(
                         modifier = Modifier.height(4.dp)
                     )
 
+                    // muestra porcentaje de cada categoria
                     expensesByCategory.forEach {
 
                         val percentage =

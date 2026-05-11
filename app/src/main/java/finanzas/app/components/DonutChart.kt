@@ -13,10 +13,12 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun DonutChart(
 
+    // Recibe categorías y montos para generar el gráfico
     data: Map<String, Double>
 
 ) {
 
+    // Lista de colores utilizados en las secciones del gráfico
     val colors = listOf(
 
         Color(0xFF4285F4), // azul
@@ -28,21 +30,27 @@ fun DonutChart(
 
     )
 
+    // Calcula el total general de gastos
     val total = data.values.sum()
 
+    // Área de dibujo del gráfico
     Canvas(
 
         modifier = Modifier.size(220.dp)
 
     ) {
 
+        // Ángulo inicial del gráfico
         var startAngle = -90f
 
+        // Recorre cada categoría para dibujar una sección
         data.entries.forEachIndexed { index, entry ->
 
+            // Calcula el tamaño proporcional de cada sección
             val sweepAngle =
                 ((entry.value / total) * 360).toFloat()
 
+            // Dibuja el arco correspondiente
             drawArc(
 
                 color = colors[index % colors.size],
@@ -55,6 +63,7 @@ fun DonutChart(
 
                 size = Size(size.width, size.height),
 
+                // Define grosor y estilo del gráfico
                 style = Stroke(
                     width = 42f,
                     cap = StrokeCap.Round
@@ -62,6 +71,7 @@ fun DonutChart(
 
             )
 
+            // Actualiza el ángulo inicial para la siguiente sección
             startAngle += sweepAngle
         }
     }

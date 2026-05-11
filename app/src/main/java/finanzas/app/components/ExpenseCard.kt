@@ -15,14 +15,18 @@ import finanzas.app.models.Expense
 @Composable
 fun ExpenseCard(
 
+    // recibe el gasto a mostrar
     expense: Expense,
 
+    // funcion para eliminar gasto
     onDelete: () -> Unit,
 
+    // funcion para editar gasto
     onEdit: () -> Unit
 
 ) {
 
+    // tarjeta principal del gasto
     Card(
 
         onClick = { },
@@ -57,6 +61,7 @@ fun ExpenseCard(
 
         ) {
 
+            // informacion principal del gasto
             Column(
 
                 modifier = Modifier.weight(1f)
@@ -71,6 +76,7 @@ fun ExpenseCard(
                     modifier = Modifier.height(4.dp)
                 )
 
+                // categoria del gasto
                 Text(
 
                     text = expense.category,
@@ -86,6 +92,7 @@ fun ExpenseCard(
                     modifier = Modifier.height(4.dp)
                 )
 
+                // fecha del gasto
                 Text(
 
                     text = expense.date,
@@ -102,6 +109,7 @@ fun ExpenseCard(
                 modifier = Modifier.width(16.dp)
             )
 
+            // seccion derecha con monto y acciones
             Column(
 
                 horizontalAlignment =
@@ -109,6 +117,7 @@ fun ExpenseCard(
 
             ) {
 
+                // monto total del gasto
                 Text(
 
                     text = "$${expense.amount}",
@@ -126,6 +135,7 @@ fun ExpenseCard(
 
                 Row {
 
+                    // boton para editar gasto
                     IconButton(
                         onClick = onEdit
                     ) {
@@ -138,6 +148,7 @@ fun ExpenseCard(
                         )
                     }
 
+                    // boton para eliminar gasto
                     IconButton(
                         onClick = onDelete
                     ) {

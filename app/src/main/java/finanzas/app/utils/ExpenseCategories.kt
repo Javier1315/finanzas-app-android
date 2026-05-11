@@ -1,5 +1,6 @@
 package finanzas.app.utils
 
+//para almacenar las categorias, aqui se pueden poner mas
 val expenseCategories = listOf(
 
     "Comida",

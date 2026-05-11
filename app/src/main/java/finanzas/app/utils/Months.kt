@@ -1,5 +1,5 @@
 package finanzas.app.utils
-
+//sirve para el filtro de los meses
 val months = listOf(
 
     "Todos",

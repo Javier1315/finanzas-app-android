@@ -18,29 +18,39 @@ import finanzas.app.utils.expenseCategories
 import finanzas.app.viewmodels.ExpenseViewModel
 import androidx.compose.foundation.shape.RoundedCornerShape
 
+// pantalla principal de la aplicacion
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
 
+    // viewmodel encargado de gestionar gastos
     expenseViewModel: ExpenseViewModel,
 
+    // navega a pantalla para agregar gastos
     onAddExpenseClick: () -> Unit,
 
+    // navega a estadisticas
     onStatisticsClick: () -> Unit,
+
+    // navega a editar gasto
     onEditExpenseClick: (String) -> Unit,
 
+    // cierra sesion del usuario
     onLogoutClick: () -> Unit
 
 ) {
 
+    // categoria seleccionada para filtrar
     var selectedFilter by remember {
         mutableStateOf("Todas")
     }
 
+    // controla apertura del menu desplegable
     var expandedFilter by remember {
         mutableStateOf(false)
     }
 
+    // obtiene lista filtrada de gastos
     val filteredExpenses =
 
         expenseViewModel.getFilteredExpenses(
@@ -52,6 +62,7 @@ fun HomeScreen(
 
     Scaffold(
 
+        // barra superior de navegacion
         topBar = {
 
             TopAppBar(
@@ -62,6 +73,7 @@ fun HomeScreen(
 
                 actions = {
 
+                    // boton para abrir estadisticas
                     IconButton(
                         onClick = onStatisticsClick
                     ) {
@@ -75,6 +87,7 @@ fun HomeScreen(
                         )
                     }
 
+                    // boton para cerrar sesion
                     IconButton(
                         onClick = onLogoutClick
                     ) {
@@ -91,6 +104,7 @@ fun HomeScreen(
             )
         },
 
+        // boton flotante para agregar gasto
         floatingActionButton = {
 
             FloatingActionButton(
@@ -108,6 +122,7 @@ fun HomeScreen(
 
     ) { paddingValues ->
 
+        // lista principal scrolleable
         LazyColumn(
 
             modifier = Modifier
@@ -137,6 +152,7 @@ fun HomeScreen(
 
             item {
 
+                // titulo principal
                 Text(
 
                     text = "App de Finanzas DSM",
@@ -151,6 +167,7 @@ fun HomeScreen(
                     modifier = Modifier.height(12.dp)
                 )
 
+                // filtro por categoria
                 ExposedDropdownMenuBox(
 
                     expanded = expandedFilter,
@@ -193,6 +210,7 @@ fun HomeScreen(
 
                     )
 
+                    // menu de categorias
                     ExposedDropdownMenu(
 
                         expanded = expandedFilter,
@@ -240,6 +258,7 @@ fun HomeScreen(
 
                                     onClick = {
 
+                                        // actualiza filtro seleccionado
                                         selectedFilter =
                                             category
 
@@ -254,6 +273,7 @@ fun HomeScreen(
 
             item {
 
+                // tarjeta con total gastado
                 Card(
 
                     modifier = Modifier.fillMaxWidth(),
@@ -295,6 +315,7 @@ fun HomeScreen(
                             modifier = Modifier.height(8.dp)
                         )
 
+                        // muestra suma total de gastos
                         Text(
 
                             text =
@@ -316,6 +337,7 @@ fun HomeScreen(
 
             item {
 
+                // tarjeta del grafico mensual
                 Card(
 
                     modifier = Modifier.fillMaxWidth(),
@@ -358,6 +380,7 @@ fun HomeScreen(
                             modifier = Modifier.height(20.dp)
                         )
 
+                        // grafico de barras por mes
                         BarChart(
 
                             data =
@@ -369,12 +392,14 @@ fun HomeScreen(
                 }
             }
 
+            // lista de gastos registrados
             items(filteredExpenses) { expense ->
 
                 ExpenseCard(
 
                     expense = expense,
 
+                    // elimina gasto seleccionado
                     onDelete = {
 
                         expenseViewModel
@@ -383,6 +408,7 @@ fun HomeScreen(
                             )
                     },
 
+                    // abre pantalla para editar
                     onEdit = {
 
                         onEditExpenseClick(

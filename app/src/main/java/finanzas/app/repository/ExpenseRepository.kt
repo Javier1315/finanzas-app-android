@@ -7,12 +7,15 @@ import finanzas.app.models.Expense
 
 class ExpenseRepository {
 
+    // instancia de firestore para almacenar datos
     private val firestore =
         FirebaseFirestore.getInstance()
 
+    // instancia de autenticacion firebase
     private val auth =
         FirebaseAuth.getInstance()
 
+    // agrega un nuevo gasto en firestore
     fun addExpense(
 
         expense: Expense,
@@ -21,11 +24,13 @@ class ExpenseRepository {
 
     ) {
 
+        // obtiene el id del usuario actual
         val userId =
             auth.currentUser?.uid
 
         Log.d("FIREBASE", "USER ID: $userId")
 
+        // verifica si existe usuario autenticado
         if (userId == null) {
 
             Log.d("FIREBASE", "USUARIO NULL")
@@ -35,6 +40,7 @@ class ExpenseRepository {
             return
         }
 
+        // guarda el gasto en firestore
         firestore
             .collection("users")
             .document(userId)
@@ -64,6 +70,7 @@ class ExpenseRepository {
             }
     }
 
+    // elimina un gasto segun su id
     fun deleteExpense(
 
         expenseId: String,
@@ -75,6 +82,7 @@ class ExpenseRepository {
         val userId =
             auth.currentUser?.uid
 
+        // valida usuario autenticado
         if (userId == null) {
 
             onResult(false)
@@ -82,6 +90,7 @@ class ExpenseRepository {
             return
         }
 
+        // elimina el gasto seleccionado
         firestore
             .collection("users")
             .document(userId)
@@ -100,6 +109,7 @@ class ExpenseRepository {
             }
     }
 
+    // obtiene todos los gastos del usuario
     fun getExpenses(
 
         onResult: (List<Expense>) -> Unit
@@ -109,6 +119,7 @@ class ExpenseRepository {
         val userId =
             auth.currentUser?.uid
 
+        // valida usuario autenticado
         if (userId == null) {
 
             onResult(emptyList())
@@ -116,6 +127,7 @@ class ExpenseRepository {
             return
         }
 
+        // consulta gastos almacenados en firestore
         firestore
             .collection("users")
             .document(userId)
@@ -124,6 +136,7 @@ class ExpenseRepository {
 
             .addOnSuccessListener { result ->
 
+                // convierte documentos en objetos expense
                 val expenses =
 
                     result.documents.mapNotNull {
@@ -150,6 +163,8 @@ class ExpenseRepository {
                 )
             }
     }
+
+    // actualiza un gasto existente
     fun updateExpense(
 
         expense: Expense,
@@ -161,6 +176,7 @@ class ExpenseRepository {
         val userId =
             auth.currentUser?.uid
 
+        // valida usuario autenticado
         if (userId == null) {
 
             onResult(false)
@@ -168,6 +184,7 @@ class ExpenseRepository {
             return
         }
 
+        // reemplaza informacion del gasto
         firestore
             .collection("users")
             .document(userId)
